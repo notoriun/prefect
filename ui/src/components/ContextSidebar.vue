@@ -1,8 +1,8 @@
 <template>
   <p-context-sidebar class="context-sidebar">
     <template #header>
-      <router-link :to="routes.root()" class="context-sidebar__logo-link">
-        <p-icon icon="Prefect" class="context-sidebar__logo-icon" />
+      <router-link :to="routes.root()" class="context-sidebar__logo-link flex place-content-center">
+        <img src="logo.png" class="context-sidebar__logo-icon">
       </router-link>
     </template>
     <p-context-nav-item title="Dashboard" :to="routes.dashboard()" />
@@ -18,31 +18,21 @@
     <p-context-nav-item v-if="canSeeArtifacts" title="Artifacts" :to="routes.artifacts()" />
 
     <template #footer>
-      <a href="https://www.prefect.io/cloud-vs-oss?utm_source=oss&utm_medium=oss&utm_campaign=oss&utm_term=none&utm_content=none" target="_blank">
-        <p-context-nav-item>
-          <div>
-            Ready to scale?
-          </div>
-          <p-button primary small class="context-sidebar__upgade-button">
-            Upgrade
-          </p-button>
-        </p-context-nav-item>
-      </a>
       <p-context-nav-item title="Settings" :to="routes.settings()" />
     </template>
   </p-context-sidebar>
 </template>
 
 <script lang="ts" setup>
-  import { PContextSidebar, PContextNavItem } from '@prefecthq/prefect-design'
-  import { localization } from '@prefecthq/prefect-ui-library'
-  import { computed } from 'vue'
-  import { useCan } from '@/compositions/useCan'
-  import { routes } from '@/router'
+import { PContextSidebar, PContextNavItem } from '@prefecthq/prefect-design'
+import { localization } from '@prefecthq/prefect-ui-library'
+import { computed } from 'vue'
+import { useCan } from '@/compositions/useCan'
+import { routes } from '@/router'
 
-  const can = useCan()
-  const canSeeWorkPools = computed(() => can.access.work_pools && can.read.work_pool)
-  const canSeeArtifacts = computed(() => can.access.artifacts)
+const can = useCan()
+const canSeeWorkPools = computed(() => can.access.work_pools && can.read.work_pool)
+const canSeeArtifacts = computed(() => can.access.artifacts)
 </script>
 
 <style>
@@ -58,8 +48,8 @@
 }
 
 .context-sidebar__logo-icon { @apply
-  !w-[42px]
-  !h-[42px]
+  !w-[92px]
+  !h-[92px]
 }
 
 .context-sidebar__upgade-button { @apply

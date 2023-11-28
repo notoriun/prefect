@@ -1,5 +1,5 @@
 <template>
-  <div class="app-router-view">
+  <div :class="$route.meta.hideSideBar ? 'app-router-view !flex' : 'app-router-view' ">
     <template v-if="!media.lg">
       <PGlobalSidebar class="app-router-view__mobile-menu">
         <template #upper-links>
@@ -24,39 +24,46 @@
 </template>
 
 <script lang="ts" setup>
-  import { PGlobalSidebar, PIcon, media, showToast } from '@prefecthq/prefect-design'
-  import { workspaceApiKey, canKey as designCanKey, createWorkspaceRoutes, workspaceRoutesKey } from '@prefecthq/prefect-ui-library'
-  import { computed, provide, watchEffect } from 'vue'
-  import { RouterView } from 'vue-router'
-  import ContextSidebar from '@/components/ContextSidebar.vue'
-  import { useApiConfig } from '@/compositions/useApiConfig'
-  import { useCreateCan } from '@/compositions/useCreateCan'
-  import { useMobileMenuOpen } from '@/compositions/useMobileMenuOpen'
-  import { routes as appRoutes } from '@/router'
-  import { createPrefectApi, prefectApiKey } from '@/utilities/api'
-  import { canKey } from '@/utilities/permissions'
+import { PGlobalSidebar, PIcon, media, showToast } from '@prefecthq/prefect-design'
+import { workspaceApiKey, canKey as designCanKey, createWorkspaceRoutes, workspaceRoutesKey } from '@prefecthq/prefect-ui-library'
+import { provide, ref, watch, watchEffect } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
+import ContextSidebar from '@/components/ContextSidebar.vue'
+import { useApiConfig } from '@/compositions/useApiConfig'
+import { useCreateCan } from '@/compositions/useCreateCan'
+import { useMobileMenuOpen } from '@/compositions/useMobileMenuOpen'
+import { routes as appRoutes } from '@/router'
+import { createPrefectApi, prefectApiKey } from '@/utilities/api'
+import { canKey } from '@/utilities/permissions'
 
-  const { can } = useCreateCan()
-  const { config } = await useApiConfig()
-  const api = createPrefectApi(config)
-  const routes = createWorkspaceRoutes()
+const { can } = useCreateCan()
+const { config } = await useApiConfig()
+const api = createPrefectApi(config)
+const routes = createWorkspaceRoutes()
 
-  provide(canKey, can)
-  provide(designCanKey, can)
-  provide(prefectApiKey, api)
-  provide(workspaceApiKey, api)
-  provide(workspaceRoutesKey, routes)
+provide(canKey, can)
+provide(designCanKey, can)
+provide(prefectApiKey, api)
+provide(workspaceApiKey, api)
+provide(workspaceRoutesKey, routes)
 
-  api.health.isHealthy().then(healthy => {
-    if (!healthy) {
-      showToast(`Can't connect to Server API at ${config.baseUrl}. Check that it's accessible from your machine.`, 'error', { timeout: false })
-    }
-  })
+api.health.isHealthy().then(healthy => {
+  if (!healthy) {
+    showToast(`Can't connect to Server API at ${config.baseUrl}. Check that it's accessible from your machine.`, 'error', { timeout: false })
+  }
+})
 
-  const { mobileMenuOpen, toggle, close } = useMobileMenuOpen()
-  const showMenu = computed(() => media.lg || mobileMenuOpen.value)
+const { mobileMenuOpen, toggle, close } = useMobileMenuOpen()
+const route = useRoute()
 
-  watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
+const showMenu = ref(false)
+watch(route, (params) => {
+  showMenu.value = media.lg || mobileMenuOpen.value
+  if (route.meta.hideSideBar) {
+    showMenu.value = false
+  }
+})
+watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
 </script>
 
 <style>
@@ -90,7 +97,8 @@
   py-3
 }
 
-.app-router-view__sidebar { @apply
+.app-router-view__sidebar {
+  @apply
   bg-floating
   top-[54px]
   lg:bg-transparent

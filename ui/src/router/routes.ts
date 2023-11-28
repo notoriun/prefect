@@ -5,12 +5,12 @@ export const routes = {
   root: () => ({ name: 'root' }) as const,
   404: () => ({ name: '404' }) as const,
   settings: () => ({ name: 'settings' }) as const,
-  ...createWorkspaceRoutes(),
+  ...createWorkspaceRoutes()
 }
 
 export type NamedRoute = ReturnType<typeof routes[keyof typeof routes]>['name']
 
-export function isNamedRoute(route?: RouteRecordName | null): route is NamedRoute {
+export function isNamedRoute (route?: RouteRecordName | null): route is NamedRoute {
   return typeof route === 'string' && Object.keys(routes).includes(route)
 }
 

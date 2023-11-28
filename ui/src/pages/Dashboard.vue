@@ -8,9 +8,12 @@
         </template>
       </PageHeading>
     </template>
-    <template v-if="loaded">
+    <template v-if="loaded" class="w-full h-full">
       <template v-if="empty">
-        <FlowRunsPageEmptyState />
+        <!--        <div class="rounded-lg bg-white">
+          a
+        </div>-->
+        <!--        <FlowRunsPageEmptyState />-->
       </template>
       <template v-else>
         <div class="workspace-dashboard__grid">
@@ -22,61 +25,50 @@
         </div>
       </template>
     </template>
-    <MarketingBanner
-      title="Ready to scale?"
-      subtitle="Automations, role and object-level security, and serverless push work pools on Prefect Cloud"
-    >
-      <template #actions>
-        <p-button to="https://www.prefect.io/cloud-vs-oss?utm_source=oss&utm_medium=oss&utm_campaign=oss&utm_term=none&utm_content=none" target="_blank" primary>
-          Upgrade to Cloud
-        </p-button>
-      </template>
-    </MarketingBanner>
   </p-layout-default>
 </template>
 
 <script setup lang="ts">
-  import { Crumb } from '@prefecthq/prefect-design'
-  import {
-    TimeSpanFilter,
-    DashboardWorkPoolsCard,
-    WorkspaceDashboardFilter,
-    WorkspaceDashboardFlowRunsCard,
-    CumulativeTaskRunsCard,
-    PageHeading,
-    FlowRunTagsInput,
-    FlowRunsPageEmptyState,
-    useWorkspaceApi,
-    subscriptionIntervalKey,
-    mapper,
-    TaskRunsFilter,
-    MarketingBanner,
-    Getter
-  } from '@prefecthq/prefect-ui-library'
-  import { NumberRouteParam, useRouteQueryParam, useSubscription } from '@prefecthq/vue-compositions'
-  import { secondsInHour, secondsToMilliseconds } from 'date-fns'
-  import { computed, provide } from 'vue'
+import { Crumb } from '@prefecthq/prefect-design'
+import {
+  TimeSpanFilter,
+  DashboardWorkPoolsCard,
+  WorkspaceDashboardFilter,
+  WorkspaceDashboardFlowRunsCard,
+  CumulativeTaskRunsCard,
+  PageHeading,
+  FlowRunTagsInput,
+  FlowRunsPageEmptyState,
+  useWorkspaceApi,
+  subscriptionIntervalKey,
+  mapper,
+  TaskRunsFilter,
+  Getter
+} from '@prefecthq/prefect-ui-library'
+import { NumberRouteParam, useRouteQueryParam, useSubscription } from '@prefecthq/vue-compositions'
+import { secondsInHour, secondsToMilliseconds } from 'date-fns'
+import { computed, provide } from 'vue'
 
-  provide(subscriptionIntervalKey, {
-    interval: secondsToMilliseconds(30),
-  })
+provide(subscriptionIntervalKey, {
+  interval: secondsToMilliseconds(30)
+})
 
-  const api = useWorkspaceApi()
-  const flowRunsCountAllSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [{}])
-  const loaded = computed(() => flowRunsCountAllSubscription.executed)
-  const empty = computed(() => flowRunsCountAllSubscription.response === 0)
+const api = useWorkspaceApi()
+const flowRunsCountAllSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [{}])
+const loaded = computed(() => flowRunsCountAllSubscription.executed)
+const empty = computed(() => flowRunsCountAllSubscription.response === 0)
 
-  const crumbs: Crumb[] = [{ text: 'Dashboard' }]
+const crumbs: Crumb[] = [{ text: 'Dashboard' }]
 
-  const timeSpanInSeconds = useRouteQueryParam('span', NumberRouteParam, secondsInHour * 24)
-  const tags = useRouteQueryParam('tags', [])
+const timeSpanInSeconds = useRouteQueryParam('span', NumberRouteParam, secondsInHour * 24)
+const tags = useRouteQueryParam('tags', [])
 
-  const filter = computed<WorkspaceDashboardFilter>(() => ({
-    timeSpanInSeconds: timeSpanInSeconds.value,
-    tags: tags.value,
-  }))
+const filter = computed<WorkspaceDashboardFilter>(() => ({
+  timeSpanInSeconds: timeSpanInSeconds.value,
+  tags: tags.value
+}))
 
-  const tasksFilter: Getter<TaskRunsFilter> = () => mapper.map('WorkspaceDashboardFilter', filter.value, 'TaskRunsFilter')
+const tasksFilter: Getter<TaskRunsFilter> = () => mapper.map('WorkspaceDashboardFilter', filter.value, 'TaskRunsFilter')
 </script>
 
 <style>

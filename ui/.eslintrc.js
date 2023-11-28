@@ -3,23 +3,23 @@ module.exports = {
   env: {
     node: true
   },
-  extends: ["@prefecthq"],
+  extends: [
+    'eslint:recommended',
+    'standard',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-strongly-recommended'
+  ],
   parser: 'vue-eslint-parser',
   parserOptions: {
-    ecmaVersion: 2020,
-    project: ["./tsconfig.json"],
-    sourceType: 'module',
-    parser: '@typescript-eslint/parser'
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 'latest',
+    sourceType: 'module'
   },
-  settings: {
-    "import/resolver": {
-      typescript: {
-        project: "./tsconfig.json"
-      }
-    }
-  },
-  globals: {
-    defineProps: 'readonly',
-    defineEmits: 'readonly'
+  plugins: [],
+  rules: {
+    'vue/html-closing-bracket-newline': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/max-attributes-per-line': 'off'
   }
 }

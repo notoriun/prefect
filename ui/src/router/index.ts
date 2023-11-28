@@ -39,7 +39,7 @@ const workspaceRoutes = createWorkspaceRouteRecords({
   workPoolEdit: () => import('@/pages/WorkPoolEdit.vue'),
   workPoolQueue: () => import('@/pages/WorkPoolQueue.vue'),
   workPoolQueueCreate: () => import('@/pages/WorkPoolQueueCreate.vue'),
-  workPoolQueueEdit: () => import('@/pages/WorkPoolQueueEdit.vue'),
+  workPoolQueueEdit: () => import('@/pages/WorkPoolQueueEdit.vue')
 })
 
 const routeRecords: AppRouteRecord[] = [
@@ -47,24 +47,33 @@ const routeRecords: AppRouteRecord[] = [
     name: 'root',
     path: '/',
     redirect: routes.dashboard(),
-    children: workspaceRoutes,
+    children: [
+      ...workspaceRoutes, {
+        name: 'Login',
+        path: '/login',
+        component: () => import('@/pages/Login.vue'),
+        meta: {
+          hideSideBar: true
+        }
+      }
+    ]
   },
   {
     name: 'settings',
     path: '/settings',
-    component: (): RouteComponent => import('@/pages/Settings.vue'),
+    component: (): RouteComponent => import('@/pages/Settings.vue')
   },
 
   {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: (): RouteComponent => import('@/pages/404.vue'),
-  },
+    component: (): RouteComponent => import('@/pages/404.vue')
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(BASE_URL()),
-  routes: routeRecords as RouteRecordRaw[],
+  routes: routeRecords as RouteRecordRaw[]
 })
 
 router.beforeEach(async (to, from) => {

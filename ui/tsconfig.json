@@ -1,39 +1,34 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "declaration": true,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "jsx": "preserve",
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "outDir": "./dist/types/",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "resolveJsonModule": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
-    "strict": true,
-    "target": "esnext"
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "allowJs": true,
+    "checkJs": false,
+    "paths": {
+      "@/*": ["src/*"],
+      "@core/*": ["src/@core/*"]
+    },
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["cypress"]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.spec.ts",
     "src/**/*.vue",
-    "./*.ts",
-    "./*.d.ts",
-    "./postcss.config.js",
-    "./tailwind.config.js",
-    "tests/**/*.ts"
+    "**/*.*"
   ]
 }

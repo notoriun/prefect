@@ -1,0 +1,15 @@
+.bg-primary {
+   background-color: #8F3021
+}
+.bg-secondary {
+   background-color: #381711;
+}
+.bg-tertiary {
+   background-color: #CF5427;
+}
+.nt-btn {
+   @apply border-0 w-full sm:w-auto bg-primary cursor-pointer text-white font-bold py-2 px-4 rounded-md transition ease-in-out bg-primary
+}
+input {
+   color: black !important;
+}

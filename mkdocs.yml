@@ -3,13 +3,13 @@ site_url: https://docs.prefect.io/
 repo_url: https://github.com/PrefectHQ/prefect
 edit_uri: edit/main/docs
 extra_css:
-    - stylesheets/theme.css
-    - stylesheets/admonitions.css
-    - stylesheets/api_ref.css
-    - stylesheets/rest_ref.css
-    - stylesheets/syntax_highlights.css
-    - stylesheets/termynal.css
-    - stylesheets/extra.css
+    - stylesheets/theme.colors.scss
+    - stylesheets/admonitions.colors.scss
+    - stylesheets/api_ref.colors.scss
+    - stylesheets/rest_ref.colors.scss
+    - stylesheets/syntax_highlights.colors.scss
+    - stylesheets/termynal.colors.scss
+    - stylesheets/extra.colors.scss
 extra_javascript:
     - js/custom.js
     - js/termynal.js
